@@ -13,7 +13,7 @@ load_dotenv()
 
 # Environment Variables for Configuration
 QR_DIRECTORY = os.getenv('QR_CODE_DIR', 'qr_codes')  # Directory for saving QR code
-FILL_COLOR = os.getenv('FILL_COLOR', 'red')  # Fill color for the QR code
+FILL_COLOR = os.getenv('FILL_COLOR', 'black')  # Fill color for the QR code
 BACK_COLOR = os.getenv('BACK_COLOR', 'white')  # Background color for the QR code
 
 def setup_logging():
@@ -65,6 +65,12 @@ def main():
     # Initial logging setup
     setup_logging()
     
+    # Log environment variables
+    logging.info(f"Loaded environment variables - QR_DIRECTORY: {QR_DIRECTORY}, FILL_COLOR: {FILL_COLOR}, BACK_COLOR: {BACK_COLOR}")
+
+    # Log parsed URL argument
+    logging.info(f"Parsed URL argument: {args.url}")
+
     # Generate a timestamped filename for the QR code
     timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
     qr_filename = f"QRCode_{timestamp}.png"
@@ -74,6 +80,9 @@ def main():
     
     # Ensure the QR code directory exists
     create_directory(Path.cwd() / QR_DIRECTORY)
+    
+    # Log before generating QR code
+    logging.info(f"Starting QR code generation for URL: {args.url}")
     
     # Generate and save the QR code
     generate_qr_code(args.url, qr_code_full_path, FILL_COLOR, BACK_COLOR)
